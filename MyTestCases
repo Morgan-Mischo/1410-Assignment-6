@@ -1,0 +1,381 @@
+package cs1410;
+
+import static org.junit.Assert.assertEquals;
+import java.awt.Graphics;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Scanner;
+import java.util.TreeMap;
+import org.junit.Test;
+import java.awt.Color;
+
+public class MyTestCases
+{
+    /**
+     * Trying to write a test to see if the line is nonexistent that it will throw an illegalArgumentException
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testLineReadTable()
+    {
+        Scanner scn = new Scanner("");  
+        GraphingMethods.readTable(scn); 
+    }
+    
+    
+    
+    /** 
+     * A test that makes sure that each line has a key
+     */
+  @ Test(expected = IllegalArgumentException.class)
+    public void testLineForKeyReadTable()
+    {
+
+      Scanner scn = new Scanner("\t12"); 
+      GraphingMethods.readTable(scn);        
+          
+    }
+  
+  /**
+   * A test that makes sure that each line has a tab
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void testLineForTabReadTable()
+  {
+      
+      Scanner scn = new Scanner("Utah12"); 
+      GraphingMethods.readTable(scn); 
+
+  }
+  
+    
+    /**
+     * A test that makes sure that each line has a double
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testLineForDoubleReadTable()
+    {
+        
+        Scanner scn = new Scanner("Utah\t"); 
+        GraphingMethods.readTable(scn); 
+             
+    }
+    /**
+     * A test asserting that the line has everything
+     */
+    @Test
+    public void testLineForEverythingReadTable()
+    {
+        
+        Scanner scn = new Scanner("Utah\t12"); 
+        TreeMap<String, ArrayList<Double>> actual = GraphingMethods.readTable(scn); 
+        
+        TreeMap<String, ArrayList<Double>> expected = new TreeMap<>();
+        ArrayList<Double> utList = new ArrayList<>();
+        utList.add(12.0);
+        expected.put("Utah", utList);
+        
+        assertEquals(expected, actual); 
+        
+    }
+    
+    
+    /**
+     * If map is returned, making sure that the keys in the map match the scanner. 
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testKeyMatchesScanner()
+    {
+        
+     Scanner scn = new Scanner("Utah\t12\nNevada\t14\nIdaho\t16"); 
+     
+     TreeMap<String, ArrayList<Double>> actual = GraphingMethods.readTable(scn); 
+     TreeMap<String, ArrayList<Double>> expected = new TreeMap<>(); 
+     
+     ArrayList<Double> utList = new ArrayList<>();
+     utList.add(12.0); 
+     expected.put("Alaska", utList); 
+     
+     ArrayList<Double> nvList = new ArrayList<>();
+     nvList.add(14.0); 
+     expected.put("Hawaii", nvList); 
+     
+     ArrayList<Double> idList = new ArrayList<>();
+     idList.add(16.0); 
+     expected.put("Montana", idList); 
+     
+     assertEquals(expected, actual); 
+             
+    }
+    
+    /**
+     * Make sure valueMap.get(key) matches the numbers in scanner 
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetKeyWorks()
+    {
+            Scanner scn = new Scanner("Utah\t12\nUtah\t13\nUtah\t15\nNevada\t15\nIdaho\t13"); 
+            
+            TreeMap<String, ArrayList<Double>> actual = GraphingMethods.readTable(scn); 
+            TreeMap<String, ArrayList<Double>> expected = new TreeMap<>();
+            
+            ArrayList<Double> utList = new ArrayList<>();
+            
+            utList.add(13.0);
+            utList.add(20.0); 
+            utList.add(12.0); 
+            expected.put("Utah", utList);
+            
+            ArrayList<Double> nvList = new ArrayList<>();
+            
+            nvList.add(11.0); 
+            expected.put("Nevada", nvList);
+            
+            ArrayList<Double> idList = new ArrayList<>();
+            
+            idList.add(12.0); 
+            expected.put("Idaho", idList); 
+            
+            
+            assertEquals(expected, actual); 
+        
+    }
+    
+    /**
+     * Make sure valueMap.get(key) matches the order of the numbers in the scanner
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetKeyOrder()
+    {
+        {
+            Scanner scn = new Scanner("Utah\t12\nUtah\t13\nUtah\t15\nNevada\t15\nIdaho\t13"); 
+            
+            TreeMap<String, ArrayList<Double>> actual = GraphingMethods.readTable(scn); 
+            TreeMap<String, ArrayList<Double>> expected = new TreeMap<>();
+            
+            ArrayList<Double> utList = new ArrayList<>();
+            
+            utList.add(13.0);
+            utList.add(15.0); 
+            utList.add(12.0); 
+            expected.put("Utah", utList);
+            
+            ArrayList<Double> nvList = new ArrayList<>();
+            
+            nvList.add(13.0); 
+            expected.put("Nevada", nvList);
+            
+            ArrayList<Double> idList = new ArrayList<>();
+            
+            idList.add(15.0); 
+            expected.put("Idaho", idList); 
+            
+            
+            assertEquals(expected, actual); 
+            
+        }
+    }
+
+    
+    /**
+     * Asserts that everything is correct for readTable
+     */
+    @Test
+    public void testEverythingIsRightReadTable()
+    {
+        Scanner scn = new Scanner("Utah\t12\nUtah\t13\nUtah\t15\nNevada\t15\nIdaho\t13"); 
+        
+        TreeMap<String, ArrayList<Double>> actual = GraphingMethods.readTable(scn); 
+        TreeMap<String, ArrayList<Double>> expected = new TreeMap<>();
+        
+        ArrayList<Double> utList = new ArrayList<>();
+        
+        utList.add(12.0);
+        utList.add(13.0); 
+        utList.add(15.0); 
+        expected.put("Utah", utList);
+        
+        ArrayList<Double> nvList = new ArrayList<>();
+        
+        nvList.add(15.0); 
+        expected.put("Nevada", nvList);
+        
+        ArrayList<Double> idList = new ArrayList<>();
+        
+        idList.add(13.0); 
+        expected.put("Idaho", idList); 
+        
+        
+        assertEquals(expected, actual); 
+        
+    }
+    
+    /**
+     * Asserts that categoryMap isn't size zero
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testCategoryMapSize()
+    {
+        TreeMap<String, Double> actual = GraphingMethods.prepareGraph(null, 0); 
+        TreeMap<String, Double> expected = new TreeMap<>();
+        
+        assertEquals(expected, actual); 
+    }
+    
+    /**
+     * Asserts that categoryMap doesn't have a value that is an empty set
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testCategoryMapForEmptySet()
+    {
+        TreeMap<String, Double> actual = GraphingMethods.prepareGraph(null, 0); 
+        TreeMap<String, Double> expected = new TreeMap<>();
+        
+        expected.put("Arizona", null);
+        assertEquals(expected, actual); 
+        
+    }
+    
+    /**
+     * Asserts that a number being passed is positive
+     */
+        @Test(expected = IllegalArgumentException.class)
+        public void testCategoryMapForPositiveNum()
+        {
+            TreeMap<String, Double> actual = GraphingMethods.prepareGraph(null, 0); 
+            TreeMap<String, Double> expected = new TreeMap<>();
+            
+            expected.put("Arizona", -5.0);
+            assertEquals(expected, actual); 
+        }
+        
+        /** 
+         * Asserts that operation is sum, avg, max, or min
+         */
+        @Test(expected = IllegalArgumentException.class)
+        public void testCategoryMapForOperation()
+        {
+            int x = 0; 
+            if (x >= 4)
+            {
+            TreeMap<String, Double> actual = GraphingMethods.prepareGraph(null, x); 
+            TreeMap<String, Double> expected = new TreeMap<>();
+            
+            expected.put("Arizona", 5.0);
+            assertEquals(expected, actual); 
+            }
+        }
+       
+            
+         /**
+         * If summaryMap is returned, checking that the keys in categoryMap and summaryMap are the same
+         */
+        @Test(expected = IllegalArgumentException.class)
+        public void testCategoryMapVsSummaryMap()
+        {  
+            TreeMap<String, Double> actual = GraphingMethods.prepareGraph(null, 0); 
+            actual.keySet(); 
+            
+            TreeMap<String, ArrayList<Double>> expected = new TreeMap<>(); 
+            
+            
+            ArrayList <Double> idList = new ArrayList<>(); 
+            
+            idList.add(21.0); 
+            expected.put("Idaho", idList);
+            
+            
+            ArrayList <Double> caList = new ArrayList<>(); 
+            
+            caList.add(14.0); 
+            caList.add(7.0); 
+            expected.put("California", caList); 
+            
+            
+            expected.keySet(); 
+            
+            assertEquals(actual.keySet(), expected.keySet()); 
+            
+            
+        }
+        
+        
+        /**
+         * If summaryMap.get(key) isn't a combination of numbers from categoryMap.get(key), return illegalArgumentException
+         */
+        @Test
+        public void testCategoryMapGetVsSummaryMapGet()
+        {
+            TreeMap<String, Double> actual = GraphingMethods.prepareGraph(null, 0); 
+            
+            TreeMap<String, ArrayList<Double>> myMap = new TreeMap<>(); 
+            
+            
+            ArrayList <Double> caList = new ArrayList<>(); 
+            
+            caList.add(14.0); 
+            caList.add(7.0); 
+            myMap.put("California", caList);       
+            
+            
+            Double expected = Collections.min(caList); 
+            
+            
+            assertEquals(actual, expected);  
+            
+        }
+        
+        /**
+         * If everything works in prepareGrpah
+         */
+       /** @Test
+        public void testPrepareGraphWorks()
+        {
+            TreeMap<String, Double> actual = GraphingMethods.prepareGraph(null, 0); 
+            
+            TreeMap<String, Double> expectedTree = new TreeMap<>();
+            
+            expectedTree.put("Arizona", 21.0);
+            expectedTree.put("Arizona", 28.0);
+            expectedTree.put("Arizona", 14.0);
+            expectedTree.put("Arizona", 21.0);
+            
+            Double expected = Math.min(expectedTree.values()); 
+            
+            
+            
+            assertEquals(actual, expected); 
+        }
+        /**
+         * If ColorMap is empty, throw IllegalArgumentException
+         */
+       /** @Test(expected = IllegalArgumentException.class)
+        public void testIfColorMapIsEmpty()
+        {
+            
+            
+        }
+        
+        /**
+         * If there's a key in colorMap that isn't in summaryMap, throw IllegalArgumentException
+         */
+       /** @Test(expected = IllegalArgumentException.class)
+        public void testColorMapVsSummaryMap()
+        {
+            TreeMap<String, Color> actual = GraphingMethods.drawGraph("", Color.GREEN); 
+            
+            TreeMap<String, Color> expected = new TreeMap<>(); 
+            
+        }
+        
+        /**
+         * If there's a number in summaryMap that is negative, throw illegalArgumentException
+         */
+       /** @Test(expected = IllegalArgumentException.class)
+        public void testIfSummaryMapHasNegative()
+        {
+            
+        }
+         */   
+        
+}
